@@ -26,6 +26,7 @@ func findIntersection(l1, l2 Line) (Coordinate, error) {
 	if &l2.x != nil {
 		x = l2.x
 	}
+	fmt.Println(l1.slope, l2.slope)
 	y := l1.slope*x + l1.yint
 
 	return Coordinate{x, y}, nil
@@ -56,8 +57,7 @@ func getCommandCoordinate(command string) Coordinate {
 func generatePath(path []string) []Coordinate {
 	start := Coordinate{0, 0}
 	var coordPath []Coordinate
-	for i, s := range path {
-		fmt.Println(i, s)
+	for _, s := range path {
 		if len(coordPath) == 0 {
 			coordPath = append(coordPath, start)
 			coordPath = append(coordPath, getCommandCoordinate(s))
@@ -68,7 +68,6 @@ func generatePath(path []string) []Coordinate {
 			coordPath = append(coordPath, newPoint)
 		}
 	}
-	fmt.Println(coordPath)
 	return coordPath
 }
 
@@ -89,8 +88,11 @@ func main() {
 	path1 := strings.Split("R75,D30,R83,U83,L12,D49,R71,U7,L72", ",")
 	path2 := strings.Split("U62,R66,U55,R34,D71,R55,D58,R83", ",")
 	fmt.Println(path1, path2)
-	// cord1 := generatePath(path1)
-	// cord2 := generatePath(path2)
+	cords1 := generatePath(path1)
+	cords2 := generatePath(path2)
+
+	fmt.Println(cords1)
+	fmt.Println(cords2)
 	// TODO: Find intersections between path
 
 	l1 := createLine(Coordinate{0, 0}, Coordinate{0, 75})
