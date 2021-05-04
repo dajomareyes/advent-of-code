@@ -19,9 +19,13 @@ type Line struct {
 }
 
 type LineEquation struct {
-	A float64
-	B float64
-	C float64
+	A  float64
+	B  float64
+	C  float64
+	Xs float64
+	Xf float64
+	Ys float64
+	Yf float64
 }
 
 func findIntersectionCoordinates(l1, l2 LineEquation) (Coordinate, error) {
@@ -34,7 +38,14 @@ func findIntersectionCoordinates(l1, l2 LineEquation) (Coordinate, error) {
 	x := (l2.B*l1.C - l1.B*l2.C) / determinant
 	y := (l1.A*l2.C - l2.A*l1.C) / determinant
 
-	return Coordinate{x, y}, nil
+	isValidX := l1.Xs <= x && x <= l1.Xf || l2.Xs <= x && x <= l2.Xf
+	isValidY := l1.Ys <= y && y <= l1.Yf || l2.Ys <= y && y <= l2.Yf
+
+	if isValidX && isValidY {
+		return Coordinate{x, y}, nil
+	}
+
+	return Coordinate{}, errors.New("Line segments don't intersect")
 }
 
 func findIntersection(l1, l2 Line) (Coordinate, error) {
@@ -94,7 +105,11 @@ func createLineEquation(a, b Coordinate) LineEquation {
 	A := b.y - a.y
 	B := a.x - b.x
 	C := A*a.x + B*b.y
-	return LineEquation{A, B, C}
+	Xs := a.x
+	Xf := b.x
+	Ys := a.y
+	Yf := b.y
+	return LineEquation{A, B, C, Xs, Xf, Ys, Yf}
 }
 
 func createLine(a, b Coordinate) Line {
