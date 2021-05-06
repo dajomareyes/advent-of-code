@@ -48,20 +48,6 @@ func findIntersectionCoordinates(l1, l2 LineEquation) (Coordinate, error) {
 	return Coordinate{}, errors.New("Line segments don't intersect")
 }
 
-func findIntersection(l1, l2 Line) (Coordinate, error) {
-	if l1.slope == l2.slope {
-		return Coordinate{}, errors.New("The lines don't intersect")
-	}
-	x := (l2.yint - l1.yint) / (l1.slope - l2.slope)
-	if &l2.x != nil {
-		x = l2.x
-	}
-	fmt.Println(l1.slope, l2.slope)
-	y := l1.slope*x + l1.yint
-
-	return Coordinate{x, y}, nil
-}
-
 func getCommandCoordinate(command string) Coordinate {
 	com := command[0]
 	multiplier, err := strconv.ParseFloat(command[1:], 64)
@@ -112,17 +98,6 @@ func createLineEquation(a, b Coordinate) LineEquation {
 	return LineEquation{A, B, C, Xs, Xf, Ys, Yf}
 }
 
-func createLine(a, b Coordinate) Line {
-	slope := (a.y - b.y) / (a.x - b.x)
-	yint := a.y - slope*a.x
-	if (a.x - b.x) == 0 {
-		return Line{slope, yint, a.x}
-	}
-	result := Line{}
-	result.slope = slope
-	result.yint = yint
-	return result
-}
 
 func createLines(path []Coordinate) []LineEquation {
 	var lines []LineEquation
