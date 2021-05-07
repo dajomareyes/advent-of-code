@@ -41,6 +41,11 @@ func findIntersectionCoordinates(l1, l2 LineEquation) (Coordinate, error) {
 	isValidX := l1.Xs <= x && x <= l1.Xf || l2.Xs <= x && x <= l2.Xf
 	isValidY := l1.Ys <= y && y <= l1.Yf || l2.Ys <= y && y <= l2.Yf
 
+	isLineEndPoint1 := (x == l1.Xs && y == l1.Ys) || (x == l1.Xf && y == l1.Yf)
+	isLineEndPoint2 := (x == l2.Xs && y == l2.Ys) || (x == l2.Xf && y == l2.Yf)
+
+	fmt.Println("is line endpoint", isLineEndPoint1, isLineEndPoint2, isValidX, isValidY)
+
 	if isValidX && isValidY {
 		return Coordinate{x, y}, nil
 	}
@@ -98,7 +103,6 @@ func createLineEquation(a, b Coordinate) LineEquation {
 	return LineEquation{A, B, C, Xs, Xf, Ys, Yf}
 }
 
-
 func createLines(path []Coordinate) []LineEquation {
 	var lines []LineEquation
 	for i := 0; i < len(path)-1; i++ {
@@ -119,6 +123,9 @@ func main() {
 	// example 1
 	path1 := generatePath(strings.Split("R8,U5,L5,D3", ","))
 	path2 := generatePath(strings.Split("U7,R6,D4,L4", ","))
+
+	fmt.Println(path1)
+	fmt.Println(path2)
 
 	// generate lines
 	lines1 := createLines(path1)
