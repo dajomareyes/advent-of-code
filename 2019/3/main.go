@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -28,6 +29,15 @@ type LineEquation struct {
 	Yf float64
 }
 
+func pointExistsBetweenSegment(line LineEquation, x float64, y float64) bool {
+
+	validX := math.Min(line.Xs, line.Xf) <= x && x <= math.Max(line.Xs, line.Xf)
+	validY := math.Min(line.Ys, line.Yf) <= y && y <= math.Max(line.Ys, line.Yf)
+
+	fmt.Println(validX, validY)
+	return validX && validY
+}
+
 func findIntersectionCoordinates(l1, l2 LineEquation) (Coordinate, error) {
 	determinant := l1.A*l2.B - l2.A*l1.B
 	if determinant == 0 {
@@ -38,19 +48,13 @@ func findIntersectionCoordinates(l1, l2 LineEquation) (Coordinate, error) {
 	x := (l2.B*l1.C - l1.B*l2.C) / determinant
 	y := (l1.A*l2.C - l2.A*l1.C) / determinant
 
-	isValidX := l1.Xs <= x && x <= l1.Xf || l2.Xs <= x && x <= l2.Xf
-	isValidY := l1.Ys <= y && y <= l1.Yf || l2.Ys <= y && y <= l2.Yf
+	validPoint := pointExistsBetweenSegment(l1, x, y) && pointExistsBetweenSegment(l2, x, y)
 
-	isLineEndPoint1 := (x == l1.Xs && y == l1.Ys) || (x == l1.Xf && y == l1.Yf)
-	isLineEndPoint2 := (x == l2.Xs && y == l2.Ys) || (x == l2.Xf && y == l2.Yf)
-
-	fmt.Println("is line endpoint", isLineEndPoint1, isLineEndPoint2, isValidX, isValidY)
-
-	if isValidX && isValidY {
+	if validPoint {
 		return Coordinate{x, y}, nil
 	}
 
-	return Coordinate{}, errors.New("Line segments don't intersect")
+	return Coordinate{}, errors.New("point exists outside of line segment")
 }
 
 func getCommandCoordinate(command string) Coordinate {
