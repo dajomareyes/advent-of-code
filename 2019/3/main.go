@@ -149,6 +149,7 @@ func main() {
 
 	// TODO: intersesctions are coming out wrong because it things that each of the lines are infinite
 	// you might want to look into using vectors instead since vectors have magnitude
+	// not sure if this is usefull anymore
 	fmt.Println(intersections)
 
 	// l1 := createLineEquation(Coordinate{0, 0}, Coordinate{75, 0})
