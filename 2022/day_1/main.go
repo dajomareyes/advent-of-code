@@ -8,7 +8,8 @@ import (
 )
 
 func solution() {
-  file, err := os.Open("input.txt")
+  file, err := os.Open("final.txt")
+  // file, err := os.Open("input.txt")
   if err != nil {
     log.Fatal(err)
   }
@@ -33,7 +34,7 @@ func solution() {
     if (line == "") {
       log.Println(sum, largestElfSum)
       if sum > largestElfSum {
-        sum = largestElfSum
+        largestElfSum = sum
       }
       sum = 0
     }
